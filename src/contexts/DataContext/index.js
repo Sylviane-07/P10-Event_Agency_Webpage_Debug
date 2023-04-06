@@ -31,16 +31,19 @@ export const DataProvider = ({ children }) => {
     if (data) return;
     getData();
   });
-  const getLastevt = () => {
-    const eventsSorted = JSON.parse(JSON.stringify(data));
-    // console.log(data)
-    // console.log(eventsSorted)
-    const eventsByDate = eventsSorted?.events.sort(
-      (evtA, evtB) => new Date(evtB.date) - new Date(evtA.date)
-    );
-    setLast(eventsByDate && eventsByDate[0]);
-  }
+  const getLastevt = useCallback(async () => {
+    try {
+      const response = await api.loadData();
+      const eventsByDate = response?.events.sort(
+        (evtA, evtB) => new Date(evtB.date) - new Date(evtA.date)
+      );
+      setLast(eventsByDate[0]);
+    } catch (err) {
+      setError(err);
+    }
+  }, []);
   useEffect(() => {
+    if (last) return;
     getLastevt()
   }, [data])
   return (
