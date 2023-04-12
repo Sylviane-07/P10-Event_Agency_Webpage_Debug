@@ -23,6 +23,11 @@ export const DataProvider = ({ children }) => {
   const getData = useCallback(async () => {
     try {
       setData(await api.loadData());
+      const response = await api.loadData();
+      const eventsByDate = response?.events.sort(
+          (evtA, evtB) => new Date(evtB.date) - new Date(evtA.date)
+        );
+      setLast(eventsByDate[0]);
     } catch (err) {
       setError(err);
     }
@@ -31,21 +36,6 @@ export const DataProvider = ({ children }) => {
     if (data) return;
     getData();
   });
-  const getLastevt = useCallback(async () => {
-    try {
-      const response = await api.loadData();
-      const eventsByDate = response?.events.sort(
-        (evtA, evtB) => new Date(evtB.date) - new Date(evtA.date)
-      );
-      setLast(eventsByDate[0]);
-    } catch (err) {
-      setError(err);
-    }
-  }, []);
-  useEffect(() => {
-    if (last) return;
-    getLastevt()
-  }, [data])
   return (
     <DataContext.Provider
       // eslint-disable-next-line react/jsx-no-constructed-context-values
