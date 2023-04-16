@@ -29,16 +29,32 @@ describe("When Form is created", () => {
 
 
 describe("When a page is created", () => {
-  it("a list of events is displayed", () => {
-    // to implement
-  })
-  it("a list a people is displayed", () => {
-    // to implement
-  })
-  it("a footer is displayed", () => {
-    // to implement
-  })
-  it("an event card, with the last event, is displayed", () => {
-    // to implement
-  })
+  it("a list of events is displayed", async () => {
+    render(<Home />);
+    const eventList = screen.getByTestId("eventlist-testid");
+    const cardElement = screen.getByTestId("card-testid");
+    expect(eventList).toBeInTheDocument();
+    expect(cardElement).toBeInTheDocument();
+  });
+  it("a list a people is displayed", async () => {
+    render(<Home />);
+    const peopleList = screen.getByTestId("people-cards-list-testid");
+    expect(peopleList).toBeInTheDocument();
+    expect(screen.getAllByText("CEO"));
+    expect(screen.getAllByText("Directeur marketing"));
+    expect(screen.getAllByText("CXO"));
+  });
+  it("a footer is displayed", async () => {
+    render(<Home />);
+    const footerTest = screen.getByTestId("footer-testid");
+    expect(footerTest).toBeInTheDocument();
+    expect(screen.getByText("Notre derniére prestation"));
+    expect(screen.getByText("Contactez-nous"));
+  });
+  it("an event card, with the last event, is displayed", async () => {
+    render(<Home />);
+    const cardElement = screen.getByTestId("card-testid");
+    expect(cardElement).toBeInTheDocument();
+    expect(cardElement.className.includes("EventCard--small")).toEqual(true);
+  });
 });
