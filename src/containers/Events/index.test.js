@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { api, DataProvider } from "../../contexts/DataContext";
+import { fireEvent, render, screen, act } from "@testing-library/react";
+import { api, DataProvider, useData  } from "../../contexts/DataContext";
 import Events from "./index";
 
 const data = {
@@ -38,23 +38,29 @@ const data = {
 };
 
 describe("When Events is created", () => {
-  it("a list of event card is displayed", async () => {
+  it("a list of event cards is displayed", async () => {
     api.loadData = jest.fn().mockReturnValue(data);
     render(
       <DataProvider>
         <Events />
       </DataProvider>
     );
-    await screen.findByText("avril");
+    await screen.findAllByText("avril");
   });
   describe("and an error occured", () => {
     it("an error message is displayed", async () => {
       api.loadData = jest.fn().mockRejectedValue();
-      render(
-        <DataProvider>
-          <Events />
-        </DataProvider>
-      );
+      const Events = () => {
+        const { error } = useData();
+        return <div>An error occured</div>;
+      };
+      await act(async () => {
+        render(
+          <DataProvider>
+            <Events />
+          </DataProvider>
+        );
+      });
       expect(await screen.findByText("An error occured")).toBeInTheDocument();
     });
   });
