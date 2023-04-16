@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Slider from "./index";
 import { api, DataProvider } from "../../contexts/DataContext";
 
@@ -40,5 +40,28 @@ describe("When slider is created", () => {
     await screen.findByText(
       "Oeuvre à la coopération entre le secteur public et le privé."
     );
+  });
+});
+
+describe("When clicked on a bullet", () => {
+  it("the slider image change to matching index image", async () => {
+    window.console.error = jest.fn();
+    api.loadData = jest.fn().mockReturnValue(data);
+    render(
+      <DataProvider>
+        <Slider />
+      </DataProvider>
+    );
+    await screen.findByText("World economic forum");
+    await screen.findByText("janvier");
+    await screen.findByText(
+      "Oeuvre à la coopération entre le secteur public et le privé."
+    );
+    
+    const bullets = await screen.findAllByTestId("bullet-testid");
+    const secondBullet = bullets[1];
+    fireEvent.click(secondBullet);
+    await screen.findByText("World Gaming Day");
+    expect(screen.getByText("Evenement mondial autour du gaming")).toBeInTheDocument();
   });
 });
