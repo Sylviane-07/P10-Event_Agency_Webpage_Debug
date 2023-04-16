@@ -16,6 +16,10 @@ const Form = ({ onSuccess, onError }) => {
       try {
         await mockContactApi();
         setSending(false);
+        document.getElementById("contact-form").reset();
+        // document.querySelector(
+        //   "#contact-form > .row > .col > .SelectContainer > .Select > input"
+        // ).selectedIndex = 0;
         onSuccess();
       } catch (err) {
         setSending(false);
@@ -25,7 +29,7 @@ const Form = ({ onSuccess, onError }) => {
     [onSuccess, onError]
   );
   return (
-    <form onSubmit={sendContact}>
+    <form id="contact-form" onSubmit={sendContact}>
       <div className="row">
         <div className="col">
           <Field placeholder="" label="Nom" />
@@ -37,7 +41,7 @@ const Form = ({ onSuccess, onError }) => {
             type="large"
             titleEmpty
           />
-          <Field placeholder="" label="Email" />
+          <Field type={FIELD_TYPES.INPUT_EMAIL} placeholder="" label="Email" />
           <Button type={BUTTON_TYPES.SUBMIT} disabled={sending}>
             {sending ? "En cours" : "Envoyer"}
           </Button>
