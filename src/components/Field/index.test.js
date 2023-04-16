@@ -53,6 +53,15 @@ describe("When a field is created", () => {
     });
   });
 
+  describe("and its type is set to FIELD_TYPES.INPUT_EMAIL", () => {
+    it("a text input is rendered", () => {
+      window.console.error = jest.fn().mockImplementation(() => null); // disable propTypes warning
+      render(<Field type={FIELD_TYPES.INPUT_EMAIL} name="test" />);
+      const fieldElement = screen.getByTestId("field-testid");
+      expect(fieldElement.type).toEqual("email");
+    });
+  });  
+
   describe("and its type is set to a wrong value", () => {
     it("a text input is rendered", () => {
       window.console.error = jest.fn().mockImplementation(() => null); // disable propTypes warning
