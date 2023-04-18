@@ -40,9 +40,9 @@ describe("When a page is created", () => {
     render(<Home />);
     const peopleList = screen.getByTestId("people-cards-list-testid");
     expect(peopleList).toBeInTheDocument();
-    expect(screen.getAllByText("CEO"));
-    expect(screen.getAllByText("Directeur marketing"));
-    expect(screen.getAllByText("CXO"));
+    expect(screen.getByText("CEO"));
+    expect(screen.getByText("Directeur marketing"));
+    expect(screen.getByText("CXO"));
   });
   it("a footer is displayed", async () => {
     render(<Home />);
